@@ -1,3 +1,5 @@
+
+
 import torch
 from torch.nn import functional as F
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
@@ -22,7 +24,7 @@ def predict(text, size):
 
     for i in range(size):
         tokens_tensor, past = model(tokens_tensor, past=past)
-        tokens_tensor = torch.multinomial(F.softmax(tokens_tensor[:, -1]),1)
+        tokens_tensor = torch.multinomial(F.softmax(tokens_tensor[:, -1], dim=1),1)
         indexed_tokens.append(tokens_tensor.item())
 
     return tokenizer.decode(indexed_tokens)
@@ -40,6 +42,6 @@ def predict(text, size):
     # return tokens_tensor
 
 if __name__ == '__main__':
-    test = 'Google and Facebook'
+    test = 'Trump said he will whole-heartedly support his impeachment. This is unprecedented.'
     predict_text = predict(test, 100).strip()
     print(predict_text)
